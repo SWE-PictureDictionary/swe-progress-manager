@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: progress-manager
+
+  config:
+    import: ""   
+
+content:
+  access:
+    url: http://localhost:8083
+
+progress:
+  access:
+    url: http://localhost:8085
+
+completion:
+  engine:
+    url: http://localhost:8086

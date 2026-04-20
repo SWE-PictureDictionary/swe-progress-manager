@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: progress-manager
+  config:
+    import: optional:configserver:http://config-service:8888
