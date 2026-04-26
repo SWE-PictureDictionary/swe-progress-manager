@@ -16,7 +16,7 @@ public class ProgressController {
     public ProgressController(ProgressService service) {
         this.service = service;
     }
-    
+
     @PostMapping("/click")
     public ResponseEntity<Void> recordClick(@RequestBody ClickRequest request) {
         service.recordClick(request.getLearnerId(), request.getTopicId(), request.getLabel());
@@ -24,7 +24,8 @@ public class ProgressController {
     }
 
     @PatchMapping("/{learnerId}/topic/{topicId}/complete")
-    public ResponseEntity<?> checkCompletion(@PathVariable String learnerId, @PathVariable String topicId) {
+    public ResponseEntity<?> checkCompletion(@PathVariable String learnerId,
+                                             @PathVariable String topicId) {
         CompletionRequest completionRequest = service.buildCompletionRequest(learnerId, topicId);
         CompletionResponse result = service.checkCompletion(completionRequest);
         return ResponseEntity.ok(result);
@@ -32,13 +33,18 @@ public class ProgressController {
 
     @GetMapping("/{learnerId}")
     public ResponseEntity<?> getProgress(@PathVariable String learnerId) {
-        return ResponseEntity.ok(service.getProgress(learnerId));
+        return service.getProgress(learnerId);
     }
 
-    /* Will need these. No business logic here:
-        CRUD on learner progress table in PostgreSQL. Business verbs:
-    POST /progress/click (record a click), GET /progress/{learnerId} (return all click
-    sets), PATCH /progress/{learnerId}/topic/{topicId}/complete.
-    */
+    @GetMapping("/{learnerId}/topic/{topicId}")
+    public ResponseEntity<?> getProgressForTopic(@PathVariable String learnerId,
+                                                 @PathVariable String topicId) {
+        return service.getProgressForTopic(learnerId, topicId);
+    }
 
+    @DeleteMapping("/{learnerId}/topic/{topicId}/latest")
+    public ResponseEntity<?> undoLatestClick(@PathVariable String learnerId,
+                                             @PathVariable String topicId) {
+        return service.undoLatestClick(learnerId, topicId);
+    }
 }

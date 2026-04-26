@@ -1,13 +1,11 @@
 package com.swe.project.progressmanager.client;
 
-import java.util.Set;
-
+import com.swe.project.progressmanager.dto.ClickRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import com.swe.project.progressmanager.dto.ClickRequest;
 
 @Component
 public class ProgressAccessClient {
@@ -18,7 +16,6 @@ public class ProgressAccessClient {
     private String progressAccessUrl;
 
     public void recordClick(String learnerId, String topicId, String label) {
-
         String url = progressAccessUrl + "/progress/click";
 
         ClickRequest request = new ClickRequest(learnerId, topicId, label);
@@ -38,13 +35,38 @@ public class ProgressAccessClient {
 
     public ResponseEntity<String> getProgress(String learnerId) {
         String url = progressAccessUrl + "/progress/" + learnerId;
-        ResponseEntity<String> response = restTemplate.exchange(
-            url,
-            HttpMethod.GET,
-            null,
-            String.class
+
+        return restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                String.class
         );
-        return response;
     }
 
+    public ResponseEntity<String> getProgressForTopic(String learnerId, String topicId) {
+        String url = progressAccessUrl + "/progress/" + learnerId + "/topic/" + topicId;
+
+        return restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                String.class
+        );
+    }
+
+    public ResponseEntity<String> undoLatestClick(String learnerId, String topicId) {
+        String url = progressAccessUrl + "/progress/" + learnerId + "/topic/" + topicId + "/latest";
+
+        try {
+            return restTemplate.exchange(
+                    url,
+                    HttpMethod.DELETE,
+                    null,
+                    String.class
+            );
+        } catch (HttpClientErrorException.NotFound e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
