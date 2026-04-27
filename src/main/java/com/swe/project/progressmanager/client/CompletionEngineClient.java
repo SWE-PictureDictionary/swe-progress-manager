@@ -15,7 +15,7 @@ public class CompletionEngineClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${completion.engine.url:http://completion-engine:8080}")
+    @Value("${completion.engine.url:http://completion-engine}")
     private String completionEngineUrl;
 
      public CompletionResponse checkCompletion(Set<String> allLabels, Set<String> clickedLabels) {

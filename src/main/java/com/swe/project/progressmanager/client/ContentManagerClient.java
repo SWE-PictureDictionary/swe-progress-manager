@@ -10,7 +10,7 @@ public class ContentManagerClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${content.manager.url:http://content-manager:8080}")
+    @Value("${content.manager.url:http://content-manager}")
     private String contentManagerUrl;
 
     public ResponseEntity<String> getTopic(String topicId) {

@@ -10,7 +10,7 @@ public class ContentAccessClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${content.access.url:http://content-access:8080}")
+    @Value("${content.access.url:http://content-access}")
     private String contentAccessUrl;
 
     public String getTopicRaw(String topicId) {

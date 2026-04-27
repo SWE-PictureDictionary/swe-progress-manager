@@ -12,7 +12,7 @@ public class ProgressAccessClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${progress.access.url:http://progress-access:8080}")
+    @Value("${progress.access.url:http://progress-access}")
     private String progressAccessUrl;
 
     public void recordClick(String learnerId, String topicId, String label) {
